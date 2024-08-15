@@ -89,7 +89,7 @@
                 <label class="form-label">Imagen Perfil</label>
                 <input type="file" id="txtImagen" runat="server" class="form-control" />
             </div>
-            <asp:Image ID="imgNuevoPerfil" ImageUrl="https://www.palomacornejo.com/wp-content/uploads/2021/08/no-image.jpg"
+            <asp:Image ID="imgNuevoPerfil" ImageUrl= "https://www.palomacornejo.com/wp-content/uploads/2021/08/no-image.jpg"
                 runat="server" CssClass="img-fluid mb-3" />
         </div>
     </div>

@@ -22,10 +22,13 @@ namespace Tp_Final_LucasPoggio
                 Response.Redirect("Login.aspx", false);
             else {
 
-                if (!IsPostBack) { 
-                    txtNombre.Text = ((User)Session["User"]).Nombre;
-                    txtApellido.Text = ((User)Session["User"]).Apellido;
-                    txtEmail.Text = ((User)Session["User"]).Email;
+                if (!IsPostBack) {
+                    User user = (User)Session["User"];
+                    txtNombre.Text = user.Nombre;
+                    txtApellido.Text = user.Apellido;
+                    txtEmail.Text = user.Email;
+                    if(!string.IsNullOrEmpty(user.UrlImagenPerfil))
+                        imgNuevoPerfil.ImageUrl = "~/Images/" + user.UrlImagenPerfil;
                 }
 
             }
@@ -47,9 +50,9 @@ namespace Tp_Final_LucasPoggio
                 UserNegocio negocio = new UserNegocio();
                 User usuarioLogueado = new User();
 
-                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + ((User)Session["User"]).Email + ".jpg");
+                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + ((User)Session["User"]).Email + ".png");
                 
-                usuarioLogueado.UrlImagenPerfil = "perfil-" + ((User)Session["User"]).Email + ".jpg";
+                usuarioLogueado.UrlImagenPerfil = "perfil-" + ((User)Session["User"]).Email + ".png";
 
                 Image img = (Image)Master.FindControl("imgAvatar");
                 img.ImageUrl = "~/Images/" + usuarioLogueado.UrlImagenPerfil;
@@ -87,19 +90,18 @@ namespace Tp_Final_LucasPoggio
             else {
 
                 string ruta = Server.MapPath("./Images/");
+                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + ((User)Session["User"]).Email + ".png");
 
+                nuevoUsuario.UrlImagenPerfil = "perfil-" + nuevoUsuario.Email + ".png";
                 nuevoUsuario.Email = txtEmail.Text;
                 nuevoUsuario.Pass = txtPass.Text;
                 nuevoUsuario.Nombre = txtNombre.Text;
                 nuevoUsuario.Apellido = txtApellido.Text;
-
                 if (chkSi.Checked)
                     nuevoUsuario.Admin = true;
                 else
                     nuevoUsuario.Admin = false;
 
-                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + ((User)Session["User"]).Email + ".jpg");
-                nuevoUsuario.UrlImagenPerfil = "perfil-" + nuevoUsuario.Email + ".jpg";
                 Image img = (Image)Master.FindControl("imgAvatar");
                 img.ImageUrl = "~/Images/" + nuevoUsuario.UrlImagenPerfil;
 
