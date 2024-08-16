@@ -99,9 +99,9 @@ namespace Tp_Final_LucasPoggio
             else {
 
                 string ruta = Server.MapPath("./Images/");
-                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + ((User)Session["User"]).Email + ".png");
+                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + txtEmail.Text + ".png");
 
-                nuevoUsuario.UrlImagenPerfil = "perfil-" + nuevoUsuario.Email + ".png";
+                nuevoUsuario.UrlImagenPerfil = "perfil-" + txtEmail.Text + ".png";
                 nuevoUsuario.Email = txtEmail.Text;
                 nuevoUsuario.Pass = txtPass.Text;
                 nuevoUsuario.Nombre = txtNombre.Text;
