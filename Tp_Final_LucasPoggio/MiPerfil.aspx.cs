@@ -27,6 +27,12 @@ namespace Tp_Final_LucasPoggio
                     txtNombre.Text = user.Nombre;
                     txtApellido.Text = user.Apellido;
                     txtEmail.Text = user.Email;
+                    txtPass.TextMode = TextBoxMode.SingleLine;
+                    txtPass.Text = user.Pass;
+                    if (user.Admin)
+                        chkSi.Checked = true;
+                    else
+                        chkNo.Checked = true;
                     if(!string.IsNullOrEmpty(user.UrlImagenPerfil))
                         imgNuevoPerfil.ImageUrl = "~/Images/" + user.UrlImagenPerfil;
                 }
@@ -39,9 +45,6 @@ namespace Tp_Final_LucasPoggio
         {
             try
             {
-                Page.Validate();
-                if (!Page.IsValid)
-                    return;
 
                 if (Validaciones())
                     return;
@@ -61,6 +64,12 @@ namespace Tp_Final_LucasPoggio
                 usuarioLogueado.Email = txtEmail.Text;
                 usuarioLogueado.Pass = txtPass.Text;
                 usuarioLogueado.Apellido = txtApellido.Text;
+
+                if(((User)Session["User"]).Admin)
+                    usuarioLogueado.Admin = true;
+                else
+                    usuarioLogueado.Admin = false;
+
                 usuarioLogueado.id = ((User)Session["User"]).id;
                 negocio.ModificarUsuario(usuarioLogueado);
                 Session.Add("User", usuarioLogueado);
@@ -85,7 +94,7 @@ namespace Tp_Final_LucasPoggio
             if (!Page.IsValid)
                 return;
 
-            if (Validaciones() || ValidarMail())
+            if (Validaciones() || ValidarMail() || ValidarCheck())
                 return;
             else {
 
@@ -114,7 +123,7 @@ namespace Tp_Final_LucasPoggio
         {
             UserNegocio negocio = new UserNegocio();
             bool bandera = false;
-            if (txtNombre.Text == "" || txtApellido.Text == "" || txtEmail.Text == "" || txtPass.Text == "")
+            if (txtNombre.Text == "" || txtApellido.Text == "" || txtEmail.Text == "")
             {
                 string script = "alert('Campo requerido!')";
                 ClientScript.RegisterStartupScript(this.GetType(), "Alert", script, true);
@@ -124,11 +133,6 @@ namespace Tp_Final_LucasPoggio
             {
                 if (txtNombre.Text.Any(char.IsDigit) || txtApellido.Text.Any(char.IsDigit)) { 
                     string script = "alert('Solo letras!')";
-                    ClientScript.RegisterStartupScript(this.GetType(), "Alert", script, true);
-                    return bandera = true;
-                }
-                if (!chkSi.Checked && !chkNo.Checked) {
-                    string script = "alert('Seleccione si el nuevo usuario es admin o no!')";
                     ClientScript.RegisterStartupScript(this.GetType(), "Alert", script, true);
                     return bandera = true;
                 }
@@ -146,10 +150,26 @@ namespace Tp_Final_LucasPoggio
                 ClientScript.RegisterStartupScript(this.GetType(), "Alert", script, true);
                 return bandera = true;
             }
+            if (txtPass.Text == "")
+            {
+                string script = "alert('Password requerido!')";
+                ClientScript.RegisterStartupScript(this.GetType(), "Alert", script, true);
+                return bandera = true;
+            }
             return bandera;
         }
-
-
+        //Valida que el usuario elija un check
+        private bool ValidarCheck() {
+            UserNegocio negocio = new UserNegocio();
+            bool bandera = false;
+            if (!chkSi.Checked && !chkNo.Checked)
+            {
+                string script = "alert('Seleccione si el nuevo usuario es admin o no!')";
+                ClientScript.RegisterStartupScript(this.GetType(), "Alert", script, true);
+                return bandera = true;
+            }
+            return bandera;
+        }
 
     }
 }

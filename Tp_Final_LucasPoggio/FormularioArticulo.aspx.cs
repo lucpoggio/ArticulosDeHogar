@@ -283,7 +283,7 @@ namespace Tp_Final_LucasPoggio
                 bandera = true;
             }
             else { 
-                if (txtNombre.Text.Any(char.IsDigit) || txtPrecio.Text.Any(char.IsLetter) || txtDescripcion.Text.Length > 150)
+                if (txtPrecio.Text.Any(char.IsLetter) || txtDescripcion.Text.Length > 150 || txtCodigo.Text.Length > 8)
                     bandera = true;
             }
             return bandera;

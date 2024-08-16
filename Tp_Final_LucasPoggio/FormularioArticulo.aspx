@@ -8,22 +8,6 @@
 
     <%--Estilos Css--%>
     <style>
-        a.neon {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            padding: 10px 20px;
-            background-color: #222;
-            border-radius: 5px;
-            box-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
-            transition: all 0.3s ease-in-out;
-        }
-
-            a.neon:hover {
-                color: #0ff;
-                box-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff;
-            }
-
         .heart-btn {
             background-color: transparent;
             border: none;
@@ -42,6 +26,12 @@
         }
     </style>
 
+    <script type="text/javascript">
+        function confirmarEliminar() {
+            return confirm("¿Estás seguro de que deseas eliminar este elemento?");
+        }
+    </script>
+
     <%--Campos del formulario con sus validaciones--%>
     <div class="row">
         <div class="col-6">
@@ -53,13 +43,11 @@
                 <label for="txtNombre" class="form-label">Nombre</label>
                 <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" />
                 <asp:RequiredFieldValidator ErrorMessage="El nombre es requerido!" ControlToValidate="txtNombre" CssClass="validacion" runat="server" />
-                <asp:RegularExpressionValidator ErrorMessage="Ingrese solo letras!" CssClass="validacion" ValidationExpression="^[a-zA-Z]+$" ControlToValidate="txtNombre" runat="server" />
             </div>
             <div class="mb-3">
                 <label for="txtCodigo" class="form-label">Codigo</label>
-                <asp:TextBox runat="server" ID="txtCodigo" CssClass="form-control" />
+                <asp:TextBox runat="server" ID="txtCodigo" CssClass="form-control" MaxLength="8" />
                 <asp:RequiredFieldValidator ErrorMessage="El código es requerido!" CssClass="validacion" ControlToValidate="txtCodigo" runat="server" />
-                <asp:RegularExpressionValidator ErrorMessage="Maximo de 6 caracteres!" CssClass="validacion" ValidationExpression="^.{1,6}$" ControlToValidate="txtCodigo" runat="server" />
             </div>
             <div class="mb-3">
                 <label for="ddlMarca" class="form-label">Marca: </label>
@@ -79,19 +67,19 @@
             <%--Si el usuario es administrador puede acceder a los siguientes botones de modificacion--%>
 
             <%if ((dominio.User)Session["User"] != null && ((dominio.User)Session["User"]).Admin)
-              { %>
+                { %>
 
-                <div class="mb-3">
-                    <asp:Button Text="Agregar" ID="btnAgregar" CssClass="btn btn-success" OnClick="btnAgregar_Click" runat="server" />
-                    <asp:Button Text="Modificar" ID="btnModificar" CssClass="btn btn-primary" OnClick="btnModificar_Click" runat="server" />
-                    <asp:Button Text="Eliminar" ID="btnEliminar" CssClass="btn btn-danger" OnClick="btnEliminar_Click" runat="server" />
-                    <asp:Button Text="Limpiar Formulario" ID="btnLimpiar" CssClass="btn btn-light" OnClick="btnLimpiar_Click" runat="server" />
-                </div>
+            <div class="mb-3">
+                <asp:Button Text="Agregar" ID="btnAgregar" CssClass="btn btn-success" OnClick="btnAgregar_Click" runat="server" />
+                <asp:Button Text="Modificar" ID="btnModificar" CssClass="btn btn-primary" OnClick="btnModificar_Click" runat="server" />
+                <asp:Button Text="Eliminar" ID="btnEliminar" CssClass="btn btn-danger" OnClientClick="return confirmarEliminar();" OnClick="btnEliminar_Click" runat="server" />
+                <asp:Button Text="Limpiar Formulario" ID="btnLimpiar" CssClass="btn btn-light" OnClick="btnLimpiar_Click" runat="server" />
+            </div>
 
             <%} %>
 
             <div class="mb-3">
-                <a href="ArticulosLista.aspx" class="neon">Volver</a>
+                <a href="ArticulosLista.aspx">Volver</a>
             </div>
         </div>
 
@@ -118,17 +106,17 @@
                             <%--Si hay un articulo en el formulario, aparece la opcion de agregarlo a favoritos--%>
 
                             <%if (id != null && id != "")
-                              { %>
+                                { %>
 
-                                <%if (BanderaFavorito == false)
-                                  { %>
-                                    <asp:Button ID="btnFavorito" runat="server" OnClick="btnFavorito_Click" CssClass="btn btn-primary" Text="Agregar a Favoritos" />
-                                <%} %>
+                            <%if (BanderaFavorito == false)
+                                { %>
+                            <asp:Button ID="btnFavorito" runat="server" OnClick="btnFavorito_Click" CssClass="btn btn-primary" Text="Agregar a Favoritos" />
+                            <%} %>
 
-                                <%else
-                                  { %>
-                                    <asp:Button ID="Button1" runat="server" OnClick="btnFavorito_Click" class="heart-btn" Text="❤" />
-                                <%} %>
+                            <%else
+                                { %>
+                            <asp:Button ID="Button1" runat="server" OnClick="btnFavorito_Click" class="heart-btn" Text="❤" />
+                            <%} %>
 
                             <%} %>
                         </ContentTemplate>
@@ -142,7 +130,6 @@
             <asp:UpdatePanel runat="server">
                 <ContentTemplate>
                     <div class="mb-3">
-
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

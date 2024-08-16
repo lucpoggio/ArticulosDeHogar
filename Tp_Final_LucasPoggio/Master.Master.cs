@@ -29,5 +29,16 @@ namespace Tp_Final_LucasPoggio
                 imgAvatar.ImageUrl = "https://media.istockphoto.com/id/1458683533/es/vector/signo-de-interrogaci%C3%B3n-en-persona-cabeza-icono-vector-como-desconocido-secreto-an%C3%B3nimo.jpg?s=612x612&w=0&k=20&c=sG5GQQKtxiqCAisySy8gDe5FDJdSaIJVLHzZTrRxVtQ=";
             }
         }
+
+        protected void btnSalir_Click(object sender, EventArgs e)
+        {
+            if (Seguridad.sesionActiva(Session["User"]))
+            {
+                Session.Remove("User");
+                Response.Redirect("Login.aspx", false);
+            }
+            else
+                return;
+        }
     }
 }

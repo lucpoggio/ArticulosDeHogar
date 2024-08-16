@@ -90,6 +90,37 @@ namespace negocio
             }
 
         }
+        //Cuenta los favoritos de un usuario
+        public int ContarFavoritos(int id) {
+
+            try
+            {
+                int resultado = 0;
+
+                string consulta = $"select count(1) from FAVORITOS where IdUser = {id}";
+
+                datos.SetearConsulta(consulta);
+                datos.EjecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    resultado = (int)datos.Lector.GetInt32(0);
+                }
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+
+            }
+        }
+
+
 
     }
 }

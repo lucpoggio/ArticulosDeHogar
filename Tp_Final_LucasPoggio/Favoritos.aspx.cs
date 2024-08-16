@@ -12,6 +12,7 @@ namespace Tp_Final_LucasPoggio
     public partial class Favoritos : System.Web.UI.Page
     {
         public List<Articulo> ListaFavoritos { get; set; }
+        public int CantidadFavoritos { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {    
             User usuarioLogueado = new User();
@@ -19,7 +20,9 @@ namespace Tp_Final_LucasPoggio
 
             if (usuarioLogueado != null) {
                 ArticuloNegocio negocio = new ArticuloNegocio();
+                FavoritoNegocio favoritoNegocio = new FavoritoNegocio();
                 ListaFavoritos = negocio.ListarArticulos(usuarioLogueado.id.ToString());
+                CantidadFavoritos = favoritoNegocio.ContarFavoritos(usuarioLogueado.id);
             }
         }
     }

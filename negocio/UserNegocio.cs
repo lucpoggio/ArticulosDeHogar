@@ -58,8 +58,11 @@ namespace negocio
         {
             try
             {
-                datos.SetearConsulta("Update USERS set Nombre = @nombre, Apellido = @apellido, Pass = @pass, UrlImagenPerfil = @imagen Where id = @id");
-                
+                if(user.Admin)
+                    datos.SetearConsulta("Update USERS set Nombre = @nombre, Apellido = @apellido, Pass = @pass, UrlImagenPerfil = @imagen Where id = @id");
+                else
+                    datos.SetearConsulta("Update USERS set Nombre = @nombre, Apellido = @apellido, UrlImagenPerfil = @imagen Where id = @id");
+
                 datos.SetearParametro("@nombre", user.Nombre);
                 datos.SetearParametro("@apellido", user.Apellido);
                 datos.SetearParametro("@pass",user.Pass);

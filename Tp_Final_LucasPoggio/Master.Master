@@ -53,6 +53,7 @@
 
                     <asp:Image ID="imgAvatar" Style="height: 40px; width: 40px; border-radius: 50%;"
                         runat="server" />
+                    <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-succes" Style="background-color: greenyellow; margin-left: 20px;" Onclick="btnSalir_Click" runat="server" />
                 </div>
             </div>
         </nav>
